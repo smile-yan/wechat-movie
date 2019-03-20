@@ -285,29 +285,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('1', 'smile', '88888888', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('2', 'cry', '99999999', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('3', 'fear', '77777777', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('4', 'angry', '66666666', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('5', 'disgust', '55555555', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('6', 'peace', '33333333', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('7', 'meditate', '44444444', '2000', 'null', 'null');
-INSERT INTO `user` VALUES ('8', '想冬眠的老鼠', '123456', '9770', 'http://thirdwx.qlogo.cn/mmopen/vi_32/zTibWJ4F4c7HWb19em2RPicP26qk8LYYtYiaoEWFWL5koerz7SYibaWsECzb95iccp5LHSiavJ6MsU2opn51JBcKLnibg/132', 'obXGhxLPQeDPD18cwudRYvZwUneo');
-INSERT INTO `user` VALUES ('9', 'Tiger大队队长', '123456', '1885', 'http://thirdwx.qlogo.cn/mmopen/vi_32/J0RvibibZiaDdJDaeS1aYwh8xuticQUsh9a919g2o2rt7roEo1bicxmYY2o23UZw96DXolJ2MMjI8eSoVO7cbX4miaFw/132', 'obXGhxOPU76Zk8eHIyjDI81pGkQM');
-INSERT INTO `user` VALUES ('10', 'that dog ，that person', '123456', '1845', 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTK4SnkQH9e89G9tjeCHv80P6ibD6xlBicpcNarxO2LujhFzPVhaTsentd1zKyTNTlhp113tJnWN08yw/132', 'obXGhxN3-dWNbIiES2btaMQA4i24');
-INSERT INTO `user` VALUES ('11', '垚', '123456', '15', 'http://thirdwx.qlogo.cn/mmopen/vi_32/Z4CUiaGULnpOxFYLEk2ibLndd0KiaabE3lnJ7ObgzLtUKtzs787NvQolJmWAyd3O9odTOt76Niaq7djetp5wJyXkOQ/132', 'obXGhxMa6scsAq_Db0e2ppURCBeY');
-INSERT INTO `user` VALUES ('12', '嘉宜河', '123456', '95', 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKeguojoV4mtxWcnFBS6A4rxJ4kzNdEQxUP6XasYibBJLHlTfcKgmgRN6FkFIstWkj6pvKhJtRGOvA/132', 'obXGhxNPSk79wB5ocguAizdjfuc8');
-INSERT INTO `user` VALUES ('13', '指尖流年、颜', '123456', '2000', 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLxxicATYU0wRbypL2ycGWOVJeksENcZylg1CFViciclbPAy35VqRo3n8oSWTwafYKJRAqF4ZPDc3PBA/132', 'obXGhxLpeQ-mEyQJtAXNi5n3wF6E');
-INSERT INTO `user` VALUES ('14', '郭浩', '123456', '2000', 'http://thirdwx.qlogo.cn/mmopen/vi_32/qEiblaEsfKJrdfdOooh3PiafbdlkfDBIUz8Wd0Hy0GEw8vNqUNewmAMnUCGx6Clyg9zNDUYsnoPuDAn6hJHcDoCw/132', 'obXGhxF6y-h_C5dW8zUgWM0ah6KA');
-INSERT INTO `user` VALUES ('15', 'man', '123456', '2000', 'http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKBkmfjPpxetIHCMkIKBI1YlnFvq7HqXezGuhxlO1LGDpkXX9Mg6fD3n6qr46zibQ2825AicjWhzXWA/132', 'obXGhxLpUMJZr6W5VWFAr_T2DI7A');
-INSERT INTO `user` VALUES ('16', '笑看人生丶', '123456', '1825', 'http://thirdwx.qlogo.cn/mmopen/vi_32/l1Q6VWzQX0EDAgUvATAvR7wjibwlpQQETSsSDibfNw2qNRVFyTHCZO9ib6KyoP63A8Rpld9tibI0aWInFphSMGHe0A/132', 'obXGhxEdF9-zspxPeX2vSHz4KRCg');
-INSERT INTO `user` VALUES ('17', '丰', '123456', '1710', 'http://thirdwx.qlogo.cn/mmopen/vi_32/MskgWzFnrX0o1yn26DpOTqq63gVbSLmcXZWIwjKHANIsibkQkDEmYdQ4SzqZbZsOkYDT7l5AuibPic6aoQOjTo1Wg/132', 'obXGhxB8Ylq8nTAXOXcPLL7GedQw');
-INSERT INTO `user` VALUES ('18', '浪浪', '123456', '2000', 'http://thirdwx.qlogo.cn/mmopen/vi_32/bibdNF3cicYfUXuQ9E3xOt80xQsqFYpS1Bq8x8GwH89fzzk7whXf7slseUhpWM5HAIutDoTCmJGoJqK7tIibn7hSg/132', 'obXGhxM80YLScZPLcHhn4NZkvsSs');
-INSERT INTO `user` VALUES ('19', '旺仔QQ糖', '123456', '2000', 'http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqdClaMPEeJeDf877MJ2JG8iagvxcPrDrbfqmdqajoPlcRNO3X5djuETYRgr7jcZicmUamicEGT5Zn4A/132', 'obXGhxCtsGAMvsCu4MTSIQYrDtQM');
-
--- ----------------------------
 -- View structure for `cinema_screen`
 -- ----------------------------
 DROP VIEW IF EXISTS `cinema_screen`;
