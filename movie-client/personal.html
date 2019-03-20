@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap 4 Website Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="./jquery.qrcode.min.js"></script>
+
+    <style>
+        .bj {
+            height: 50%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="margin-top:30px">
+
+    <div class="bj">
+        <div style="width: 50%;height: 100%;float: left">
+            <img id="img_head" src="" width="40%">
+        </div>
+        <div style="float: left;width: 50%;height: 100%">
+            <span id="user_name" style="float: left;padding-right: 25%">用户昵称:</span>
+            <span id="user_money" style="float: left;padding-right: 25%">账户余额:</span>
+        </div>
+        <hr>
+        <div class="container" style="margin-top:35px"></div>
+
+        <table class="table " style="background: whitesmoke">
+            <tbody class="copy_tbody" id="tbody_id">
+            <!--<tr>-->
+            <!--<td>订单号</td>-->
+            <!--<td v-text="order_id"></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--<td>电影名</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+
+            <!--<tr>-->
+            <!--<td>放映地点</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+
+            <!--<tr>-->
+            <!--<td>座位号</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--<td>放映时间</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--<td>订单时间</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--<td>金额</td>-->
+            <!--<td></td>-->
+            <!--</tr>-->
+            </tbody>
+
+        </table>
+        <hr>
+
+
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">取票二维码</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <div id="code_div"class="text-center">
+
+                    </div>
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    // 1 解析url数据
+    var user_id = getQueryVariable("user_id");
+    // 2 去后台拿数据
+    //    $.get("http://yan.s1.natapp.cc/user/one?user_id=3",function(data,status){
+    $.get("http://yan.s1.natapp.cc/user/one?user_id=" + user_id, function (data, status) {
+        var test = JSON.stringify(data);
+        var txt = '{ "sites" : [' + test + ' ]}';
+        var obj = eval("(" + txt + ")");
+        var user_name = obj.sites[0].user_name;
+        var portrait_url = obj.sites[0].portrait_url;
+        var money = obj.sites[0].money;
+
+        $("#user_money").text("账户余额:" + money + "元");
+        $("#user_name").text("用户昵称:" + user_name);
+
+        $("#img_head").attr("src", portrait_url);
+        // 写入数据
+    });
+
+    $.get("http://yan.s1.natapp.cc/user/form?user_id=" + user_id, function (data) {
+
+        var txt = '{ "sites" : ' + data + ' }';
+        var obj = eval("(" + txt + ")");
+        order_length = obj.sites.length;
+
+
+        for (var i = 0; i < obj.sites.length; i++) {
+
+            var order_id = obj.sites[i].order_id;
+            var movie_name = obj.sites[i].movie_name;
+            var cinema_name = obj.sites[i].cinema_name;
+            var room_name = obj.sites[i].room_name;
+            var seat_x = obj.sites[i].seat_x;
+            var seat_y = obj.sites[i].seat_x;
+            var time = obj.sites[i].time;
+            var order_time = obj.sites[i].order_time;
+            var price = obj.sites[i].price;
+            $("#tbody_id").append("<tr>" +
+                "                <td>订单号</td>\n" +
+                "                <td>" + order_id +
+                "</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>" +
+                "                <td>电影名</td>\n" +
+                "                <td>"+movie_name
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td>放映地点</td>\n" +
+                "                <td>"+cinema_name+room_name
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td>座位号</td>\n" +
+                "                <td>"+seat_x+"排"+seat_y+"座"
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td>放映时间</td>\n" +
+                "                <td>"+time
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td>订单时间</td>\n" +
+                "                <td>"+order_time
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td>金额</td>\n" +
+                "                <td>"+price+"元"+"<button id=\"bt"+order_id+"\" type=\"button\" class=\"btn btn-outline-info btn-sm\">取票</button>\n"
+                +"</td>\n" +
+                "            </tr>");
+            $("#tbody_id").append("<tr>\n" +
+                "                <td></td>\n" +
+                "                <td>"
+                +"</td>\n" +
+                "            </tr>");
+
+//          //  alert(txt);
+        }
+
+//
+        $(document).ready(function(){
+            $("button").click(function(){
+//                $(this).hide();
+                $("#code_div").empty();
+                $('#myModal').modal('toggle');
+                var str = this.id+"";
+                var code_id = str.substring(2);
+//                alert(code_id);
+                $.get("http://yan.s1.natapp.cc/form/code?order_id=" + order_id, function (data, status) {
+//                    alert(data);
+                    jQuery(function(){
+                        jQuery('#code_div').qrcode(data);
+                    })
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>

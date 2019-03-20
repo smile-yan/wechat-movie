@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实力抢票小程序</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center" id="movie_name" style="background: paleturquoise;">电影名称</h2>
+    <!-- 居中 -->
+    <div class="media mt-6">
+        <img id="post_url" src="" class="align-self-center mr-4" style="width:45%">
+        <div class="media-body">
+            <span>
+                <h6 id="movie_introduction">
+                </h6>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div style="padding-bottom: 20%;" id="all_cards">
+        <!--<div class="card">-->
+        <!--<div class="card-header" style="background:paleturquoise">影院名称</div>-->
+        <!--<div class="card-body" id="card_body_id">-->
+        <!--<table class="table table-striped" >-->
+        <!--<tbody>-->
+        <!--<tr>-->
+        <!--<th>电影名称</th>-->
+        <!--<td>名称</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<th>放映厅</th>-->
+        <!--<td>名称</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<th>价格</th>-->
+        <!--<td>123</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<th>观看时间</th>-->
+        <!--<td>时间</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<th>放映ID</th>-->
+        <!--<td>-->
+        <!--<button type="button" class="btn btn-success">前去选座</button>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--</div>-->
+        <!--<div class="card-footer" style="background:paleturquoise">影院地址</div>-->
+        <!--</div>-->
+    </div>
+	<p id="user_id_show"></p>
+</div>
+<script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    var moive_id = getQueryVariable("movie_id");
+	var user_id = getQueryVariable("user_id");
+	 $("#user_id_show").text(user_id);
+	 
+	 
+	 
+    $.get("https://www.smileyan.cn/movie/one?movie_id="+moive_id,function(data,status){
+//    $.get("http://yan.s1.natapp.cc/movie/one?movie_id=1", function (data, status) {
+        //            alert(data);
+        var test = JSON.stringify(data);
+        var txt = '{ "sites" : [' + test + ' ]}';
+        var obj = eval("(" + txt + ")");
+        var movie_name = obj.sites[0].movie_name;
+        var movie_introduction = obj.sites[0].introduction;
+        var post_url = obj.sites[0].post_url;
+
+        $("#post_url").attr("src", post_url);
+        $("#movie_name").text(movie_name);
+        $("#movie_introduction").text(movie_introduction);
+    });
+
+    $.get("https://www.smileyan.cn/cinema/cinema?movie_id="+moive_id, function (data, status) {
+//    $.get("http://yan.s1.natapp.cc/cinema/cinema?movie_id=4", function (data, status) {
+        var txt = '{ "sites" : ' + data + ' }';
+//        alert(txt);
+        var obj = eval("(" + txt + ")");
+//        alert(obj.sites.length);
+//        alert(obj.sites[0].room_name);
+        var cinema_names = new Array();
+        cinema_names[0] = obj.sites[0].cinema_name;
+        var temp = cinema_names[0];
+        t = 0;
+        $("#all_cards").append(" <div class=\"card\" id=card" + t + "></div><br>");
+        $("#card" + t).append("<div class=\"card-header\" style=\"background:paleturquoise\">" + obj.sites[0].cinema_name + "</div>\n");
+        $("#card" + t).append("<div class='card-body' id='card_body_id" + t + "'>");
+        $("#card" + t).append("<div class=\"card-footer\" style=\"background:paleturquoise\">" + obj.sites[0].location + "</div>");
+        for (var i = 0; i < obj.sites.length; i++) {
+            // 如果不相等进行添加操作
+            if (obj.sites[i].cinema_name != temp) {
+                cinema_names[++t] = obj.sites[i].cinema_name;
+                temp = obj.sites[i].cinema_name;
+                $("#all_cards").append(" <div class=\"card\" id=card" + t + "></div><br>");
+                $("#card" + t).append("<div class=\"card-header\" style=\"background:paleturquoise\">" + obj.sites[i].cinema_name + "</div>\n");
+                $("#card" + t).append("<div class='card-body' id='card_body_id" + t + "'>");
+                $("#card" + t).append("<div class=\"card-footer\" style=\"background:paleturquoise\">" + obj.sites[i].location + "</div>");
+            }
+        }
+////        alert(cinema_names);
+        for (i = 0; i < cinema_names.length; i++) {
+            for (t = 0; t < obj.sites.length; t++) {
+                var cname = obj.sites[t].cinema_name;
+                if (cname == cinema_names[i]) {// 添加操作
+                    $("#card_body_id" + i).append("<table class=\"table table-striped\" >" +
+                        "                    <tbody>" +
+                        "                    <tr>" +
+                        "                        <th>影院名称</th>" +
+                        "                        <td>"+ obj.sites[t].cinema_name+"</td>\n" +
+                        "                    </tr>" +
+                        "                    <tr>" +
+                        "                        <th>放映厅</th>" +
+                        "                        <td>"+obj.sites[t].room_name+"</td>" +
+                        "                    </tr>" +
+                        "                    <tr>" +
+                        "                        <th>价格</th>" +
+                        "                        <td>"+obj.sites[t].price+"元/张</td>\n" +
+                        "                    </tr>\n" +
+                        "                    <tr>\n" +
+
+                        "                        <th>观看时间</th>\n" +
+                        "                        <td>"+obj.sites[t].time+"</td>\n" +
+                        "                    </tr>\n" +
+                        "                    <tr>\n" +
+                        "                        <th></th>\n" +
+                        "                        <td>\n" +
+                        "                            <button type=\"button\" class=\"btn btn-success\" onclick=location.href='seat.html?screen_id="+obj.sites[t].screen_id+"&user_id="+user_id+"'>前去选座</button>\n" +
+                        "                        </td><br/><hr/>\n" +
+                        "                    </tr>\n" +
+                        "                    </tbody>\n" +
+                        "                </table>");
+                }
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

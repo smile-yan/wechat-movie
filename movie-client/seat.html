@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实力抢票小程序</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center">
+        <span id="cinema_name">影院名称:</span>
+        <span id="movie_name">电影名称</span>
+    </h2>
+    <p class="text-center">
+        <span id="room_name">放映室名称</span>
+        <span id="movie_time">放映时间： </span>
+        <span id="movie_price" class="badge badge-pill badge-info">价格</span>
+    </p>
+
+    <table class="table table-bordered">
+        <!--<thead>-->
+        <!--</thead>-->
+        <tbody id="seat">
+        <!--<tr>-->
+        <!--<td>John</td>-->
+        <!--<td>Doe</td>-->
+        <!--<td>john@example.com</td>-->
+        <!--</tr>-->
+
+        </tbody>
+    </table>
+
+
+    当前已选座位
+    <div id="chosen_seat">
+        <!--<span id="" class="badge badge-success">6排4座</span>-->
+    </div>
+    <br>
+
+
+    <nav class="navbar navbar-expand-sm bg-light navbar-dark fixed-bottom">
+        <div class="container">
+
+            <button id="btn_search" class="pull-left" style="width:49%;height: 50px;">
+                <span id="sum" class="badge badge-info">共计0元</span>
+            </button>
+            <button id="buy_button" class="btn btn-primary pull-right" style="width:49%;height: 50px;">
+                <!--data-toggle="modal" data-target="#myModal"-->
+                确认购买
+            </button>
+        </div>
+    </nav>
+
+
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">确认购买</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header text-center">订单信息</div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>影院名称</th>
+                                        <td id="order_cinema_name">名称</td>
+                                    </tr>
+                                    <tr>
+                                        <th>放映室名称</th>
+                                        <td id="order_room_name">名称</td>
+                                    </tr>
+                                    <tr>
+                                        <th>电影名称</th>
+                                        <td id="order_movie_name">Doe</td>
+                                    </tr>
+                                    <tr>
+                                        <th>观看时间</th>
+                                        <td id="order_movie_time">Doe</td>
+                                    </tr>
+                                    <tr>
+                                        <th>所选座位</th>
+                                        <td id="order_seats">Doe</td>
+                                    </tr>
+                                    <!--<tr>-->
+                                    <!--<th>用户名</th>-->
+                                    <!--<td id="order_user_name"></td>-->
+                                    <!--</tr>-->
+                                    <tr>
+                                        <th>需付金额</th>
+                                        <td id="order_money">Doe</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div id="div1" style="display:none;">
+                                    <div class="alert alert-success">
+                                        <strong>购买成功!</strong>若无需继续购买，
+                                        <a id="go_oneself" href="#" class="alert-link">前往取票</a>。
+                                    </div>
+                                </div>
+                                <div id="div2" style="display:none;">
+                                    <div class="alert alert-danger">
+                                        <strong>购票失败!</strong>
+                                        余额不足，请充值后继续购票
+                                    </div>
+                                </div>
+                                <div id="div3" style="display:none;">
+                                    <div class="alert alert-warning">
+                                        <strong>购票失败!</strong>
+                                        原因不详，请尽快联系管理员，谢谢
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <div class="container">
+                        <div class="text-center">
+                            <button id="continue_buy" class="btn btn-outline-secondary"
+                                    style="width:100%;height: 50px;display: none"
+                                    data-toggle="modal" data-target="#myModal">
+                                继续买票
+                            </button>
+                            <button id="cancel" class="btn btn-outline-secondary pull-left"
+                                    style="width:49%;height: 50px;"
+                                    data-toggle="modal" data-target="#myModal">
+                                取消订单
+                            </button>
+                            <button id="order_submit" class="btn btn-outline-success pull-right"
+                                    style="width:49%;height: 50px;">
+                                确认购买
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    /**
+     *  需要传入的数据 url : screen_id,  user_id
+     *  需要查询获取的数据   电影院名称cinema_name  放映室名称   room_name   放映室尺寸row column  已选座位 [x,y]
+     *
+     * */
+
+    // 放映厅id
+
+    // 拿到url数据
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    var ticket_price = 10;
+    var chosenSeatNum = 0;
+
+    var row = 8;
+    var column = 8;
+    // 1 解析url数据
+    var screen_id = getQueryVariable("screen_id");
+    // 点击事件
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $("#buy_button").click(function () {
+                if( chosenSeatNum==0){
+
+                    $("#cancel").hide();
+                    $("#order_submit").hide();
+                    $("#continue_buy").fadeIn("slow");
+                }else{
+                    var price = $("#sum").text();
+                    $("#order_money").text(price);
+                    var cinema_name = $("#cinema_name").text().replace(":", "");
+                    $("#order_cinema_name").text(cinema_name);
+                    var movie_name = $("#movie_name").text();
+                    $("#order_movie_name").text(movie_name);
+                    var room_name = $("#room_name").text();
+                    $("#order_room_name").text(room_name);
+                    var movie_time = $("#movie_time").text().replace("观看时间：", "");
+                    $("#order_movie_time").text(movie_time);
+                    $("#order_seats").html($("#chosen_seat").html());
+                    $("#cancel").show();
+                    $("#order_submit").show();
+                    $("#continue_buy").hide();
+                }
+                $('#myModal').modal('toggle');
+            });
+
+            // 提交
+            $("#order_submit").click(function () {
+
+                var text = $("#chosen_seat").text();
+                var s = "";
+                var i;
+                // 获取数字
+                for (i = 0; i < text.length; i++) {
+                    if ("0123456789".indexOf(text.substr(i, 1)) > -1)
+                        s += text.substr(i, 1)
+                }
+//                alert(getQueryVariable("user_id"));
+//                alert(s);
+                // 大胆的想法，直接把数字提交给后天
+                $.post("http://yan.s1.natapp.cc/form/submit", {
+                        user_id: getQueryVariable("user_id"),
+                        screen_id: screen_id,
+                        seat_info: s
+                    },
+                    function (data, status) {
+//                        alert("数据: \n" + data + "\n状态: " + status);
+                        var str = data;
+
+                        if (str.indexOf("成功") != -1) {
+//                            alert("成功！");
+                            $("#div1").fadeIn("slow");
+                            $("#cancel").hide();
+                            $("#order_submit").hide();
+                            $("#continue_buy").fadeIn("slow");
+                            chosenSeatNum=0;
+                            paintSeats();
+                        } else if (str.indexOf("余额") != -1) {
+//                            alert("余额不足");
+                            $("#div2").fadeIn("slow");
+                        } else {
+//                            alert("购买失败！");
+                            $("#div3").fadeIn("slow");
+                        }
+                    });
+            });
+        });
+    });
+
+    // 写入查看订单的url
+    $("#go_oneself").attr("href","personal.html?user_id="+getQueryVariable("user_id"));
+
+    // 2 拿到其他信息
+    $.get("http://yan.s1.natapp.cc/room/info?screen_id=" + screen_id, function (data, status) {
+//        $.get("http://yan.s1.natapp.cc/room/info?screen_id="+screen_id,function(data,status){
+//        var test = JSON.stringify(data);
+        var txt = '{ "sites" : [' + data + ' ]}';
+        var obj = eval("(" + txt + ")");
+        var i = 0;
+        var room_name = obj.sites[i].room_name;
+        var cinema_name = obj.sites[i].cinema_name;
+        var room_row = obj.sites[i].room_row;
+        var price = obj.sites[i].price;
+        ticket_price = price;
+        var room_column = obj.sites[i].room_column;
+        var time = obj.sites[i].time;
+        var movie_name = obj.sites[i].movie_name;
+        row = room_row;
+        column = room_column;
+        paintSeats();
+
+//        alert(movie_name);
+        // 设置
+        $("#cinema_name").text(cinema_name + ":");
+        $("#movie_name").text(movie_name);
+        $("#room_name").text(room_name);
+        $("#movie_time").text("观看时间：" + time);
+        $("#movie_price").text("票价" + price);
+    });
+
+    function thclick(which) {
+//        alert(which);
+        // 如果已经选了座位 取消选座
+        if ($("#" + which).css("background-color") == "rgb(0, 0, 0)") {
+            $("#" + which).css("background-color", "white");
+            $("#seat_chosen" + which).remove();
+            chosenSeatNum--;
+
+            var pay = chosenSeatNum * ticket_price;
+            $("#sum").text("共计" + pay + "元");
+        } else {
+            // 判断是否已经选了
+            if ($("#" + which).css("background-color") == "rgb(88, 87, 86)") {
+                alert("此位置已经购买。请选择其他座位");
+                return;
+            } else {
+                $("#" + which).css("background-color", "black");
+            }
+
+            // 计算
+            var seat = which;
+            var row = seat[0] + '' + seat[1];
+            var column = seat[2] + '' + seat[3];
+            $("#chosen_seat").append("<span id=seat_chosen" + which + " class='badge badge-success'>" + row + "排" + column + "座</span>");
+            chosenSeatNum++;
+
+            // 计算价格
+            var pay = chosenSeatNum * ticket_price;
+            $("#sum").text("共计" + pay + "元");
+        }
+    }
+
+    paintSeats();
+
+    function paintSeats() {
+        $("#seat").empty();
+        for (i = 1; i <= row; i++) { // 行
+            // 计算
+            var row2 = i;
+            if (i < 10) row2 = '0' + i;
+            var row_id = 'row' + row2;
+            $("#seat").append("<tr id=" + row_id + "></tr>");
+            for (t = 1; t <= column; t++) { // 列
+                var column2 = t;
+                if (t < 10) column2 = '0' + t;
+                var seat_id = row2 + '' + column2;
+                $("#row" + row2).append("<th onclick='thclick(this.id)' id=" + seat_id + "></th>");
+            }
+        }
+        $.get("http://yan.s1.natapp.cc/form/all_seats?screen_id=" + screen_id, function (data, status) {
+            //        alert("数据: " + data + "\n状态: " + status);
+            //        alert("data"+data);
+            var test = JSON.stringify(data);
+            var txt = '{ "sites" : ' + test + '}';
+            var obj = eval("(" + txt + ")");
+
+            for (var i = 0; i < obj.sites.length; i++) {
+                var x = obj.sites[i].x;
+                var y = obj.sites[i].y;
+                if (x < 10) x = "0" + x;
+                if (y < 10) y = "0" + y;
+                var seat_id = y + "" + x;
+                //            alert(seat_id);
+                $("#" + seat_id).css("background-color", "rgb(88,87,86)");
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
