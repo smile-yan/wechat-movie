@@ -1,0 +1,30 @@
+server:
+  port: 80 
+  tomcat: 
+    uri-encoding: UTF-8 
+
+ 
+spring:
+  datasource: 
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ticket
+    username: root
+    password: 2015
+  jpa: 
+    hibernate: 
+      ddl-auto: none
+    show-sql: true
+  http: 
+    encoding: 
+      charset: UTF-8
+      enabled: true 
+      
+wechat: 
+  appid: wx4e89c9871d300df4
+  appsecret: 4d323a00bbf46937707b43baaa71c4bd
+  login_url: http://www.yan.s1.natapp.cc/login/login                ##登录地址
+  success_login_url:  http://www.inur74.natappfree.cc               ##前端数据
+        
+  user: 
+    password_default: 123456
+    money_default: 200
