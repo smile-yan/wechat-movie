@@ -21,7 +21,7 @@ spring:
       
 wechat: 
   appid: wx4e89c9871d300df4
-  appsecret: 4d323a00bbf46937707b43baaa71c4bd
+  appsecret: xxxxxxxxxxxxxxxxxxx
   login_url: http://www.yan.s1.natapp.cc/login/login                ##登录地址
   success_login_url:  http://www.inur74.natappfree.cc               ##前端数据
         
